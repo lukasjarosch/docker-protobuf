@@ -128,7 +128,7 @@ RUN cd / && \
 FROM alpine:${ALPINE_VERSION} as packer
 RUN apk add --no-cache curl
 
-ARG UPX_VERSION
+ARG UPX_VERSION="3.96"
 RUN mkdir -p /upx && curl -sSL https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-amd64_linux.tar.xz | tar xJ --strip 1 -C /upx && \
     install -D /upx/upx /usr/local/bin/upx
 
