@@ -139,6 +139,15 @@ RUN mkdir -p ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway && \
     mkdir -p /out/usr/include/google/rpc && \
     install -D $(find ./third_party/googleapis/google/rpc -name '*.proto') -t /out/usr/include/google/rpc
 
+RUN cd / && \
+    curl -sSLO https://github.com/lukasjarosch/protoc-gen-genki/archive/develop.zip && \
+    mkdir -p /protoc-gen-genki && \
+    cd /protoc-gen-genki && \
+    unzip -q /develop.zip &&  cd protoc-gen-genki-develop && \
+    ls -la  && \
+    go build -ldflags '-w -s' -o /protoc-gen-genki/protoc-gen-genki . && \
+    install -Ds /protoc-gen-genki/protoc-gen-genki /out/usr/bin/protoc-gen-genki
+
 
 FROM rust:${RUST_VERSION}-slim as rust_builder
 RUN apt-get update && apt-get install -y musl-tools curl
@@ -193,9 +202,9 @@ RUN mkdir -p /upx && curl -sSL https://github.com/upx/upx/releases/download/v${U
 
 COPY --from=protoc_builder /out/ /out/
 COPY --from=go_builder /out/ /out/
-COPY --from=rust_builder /out/ /out/
-COPY --from=swift_builder /protoc-gen-swift /out/protoc-gen-swift
-COPY --from=dart_builder /out/ /out/
+#COPY --from=rust_builder /out/ /out/
+#COPY --from=swift_builder /protoc-gen-swift /out/protoc-gen-swift
+#COPY --from=dart_builder /out/ /out/
 RUN upx --lzma $(find /out/usr/bin/ \
         -type f -name 'grpc_*' \
         -not -name 'grpc_csharp_plugin' \
