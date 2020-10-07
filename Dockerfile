@@ -1,5 +1,5 @@
 ARG ALPINE_VERSION="3.11"
-ARG GO_VERSION="1.15"
+ARG GO_VERSION="1.14.7"
 
 FROM alpine:${ALPINE_VERSION} as protoc_builder
 RUN apk add --no-cache build-base curl automake autoconf libtool git zlib-dev linux-headers cmake ninja
