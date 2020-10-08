@@ -21,7 +21,7 @@ RUN git clone --recursive --depth=1 -b v${GRPC_VERSION} https://github.com/grpc/
         ../.. && \
     cmake --build . --target plugins && \
     cmake --build . --target install && \
-    DESTDIR=/out cmake --build . --target install 
+    DESTDIR=/out cmake --build . --target install
 
 ARG GRPC_WEB_VERSION="1.2.0"
 RUN mkdir -p /grpc-web && \
@@ -115,8 +115,9 @@ RUN mkdir -p ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway && \
     install -D $(find ./third_party/googleapis/google/rpc -name '*.proto') -t /out/usr/include/google/rpc
 
 # protoc-gen-genki
+ARG PROTOC_GEN_GENKI_VERSION="v0.1"
 RUN cd / && \
-    curl -sSLO https://github.com/lukasjarosch/protoc-gen-genki/archive/develop.zip && \
+    curl -sSLO https://github.com/lukasjarosch/protoc-gen-genki/archive/${PROTOC_GEN_GENKI_VERSION}.zip && \
     mkdir -p /protoc-gen-genki && \
     cd /protoc-gen-genki && \
     unzip -q /develop.zip &&  cd protoc-gen-genki-develop && \
